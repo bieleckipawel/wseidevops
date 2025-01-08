@@ -1,0 +1,19 @@
+name: WSEI DevOps Project CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull repo
+        uses: actions/checkout@v4
+      - name: Build image
+        run: docker build -t devops-app .
+      - name: Test
+        run: echo "Test"
