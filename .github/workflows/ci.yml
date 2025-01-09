@@ -9,11 +9,24 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
 
     steps:
       - name: Pull repo
         uses: actions/checkout@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
-        run: docker build -t devops-app .
+        run: docker build -t ghcr.io/${{ github.repository }}/devops-app:latest .
       - name: Test
         run: echo "Test"
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}/devops-app:latest
