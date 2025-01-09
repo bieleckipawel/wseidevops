@@ -35,6 +35,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
       - name: Test
         run: echo "Test"
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.repository }}/devops-app:latest .
       - name: Push Docker image
-        run: docker tag devops-app:latest ghcr.io/${{ github.repository }}/devops-app:latest && \
-             docker push ghcr.io/${{ github.repository }}/devops-app:latest
+        run: docker push ghcr.io/${{ github.repository }}/devops-app:latest
