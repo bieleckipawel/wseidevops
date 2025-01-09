@@ -25,7 +25,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
-        run: docker build -t ghcr.io/${{ github.repository }}/devops-app:latest .
+        run: docker build -t devops-app:latest
       - name: Security scan with Trivy
         uses: aquasecurity/trivy-action@master
         with:
@@ -36,4 +36,5 @@ jobs:
       - name: Test
         run: echo "Test"
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}/devops-app:latest
+        run: docker tag devops-app:latest ghcr.io/${{ github.repository }}/devops-app:latest && \
+             docker push ghcr.io/${{ github.repository }}/devops-app:latest
