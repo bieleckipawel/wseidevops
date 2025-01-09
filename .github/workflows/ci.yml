@@ -25,8 +25,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build image
-        run: docker build -t ghcr.io/${{ github.repository }}/devops-app:latest .
+        run: docker build -t devops-app .
+      - name: Security scan with Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'devops-app'
+          format: 'table'
+          exit-code: 0
+          severity: 'CRITICAL,HIGH'
       - name: Test
         run: echo "Test"
+      - name: Build Docker image
+        run: docker build -t ghcr.io/${{ github.repository }}/devops-app:latest .
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.repository }}/devops-app:latest
